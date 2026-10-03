@@ -213,14 +213,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // =====================================================
     // LOAD ALL PLANTS
     // =====================================================
-async function loadPlants() {
-    try {
-        const response = await fetch(`${API_URL}/plants`);
-        if (!response.ok) throw new Error("Failed to load plants");
-        const plants = await response.json();
-        console.log("Plants loaded:", plants);
-        // TODO: Render plants into your HTML list here
-    } catch (error) {
+
+    catch (error) {
         console.error("Error loading plants:", error);
     }
 }
@@ -916,7 +910,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-});
-document.addEventListener("DOMContentLoaded", () => {
-    loadPlants();
 });
