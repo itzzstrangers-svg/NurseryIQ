@@ -213,7 +213,18 @@ document.addEventListener("DOMContentLoaded", () => {
     // =====================================================
     // LOAD ALL PLANTS
     // =====================================================
-
+async function loadPlants() {
+    try {
+        const response = await fetch(`${API_URL}/plants`);
+        if (!response.ok) throw new Error("Failed to load plants");
+        const plants = await response.json();
+        console.log("Plants loaded:", plants);
+        // TODO: Render plants into your HTML list here
+    } catch (error) {
+        console.error("Error loading plants:", error);
+    }
+}
+    
     async function displayPlants() {
 
         if (!plantGrid) {
@@ -406,7 +417,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-
+document.addEventListener("DOMContentLoaded", () => {
+    const findButton = document.querySelector("#find-plant-btn"); // Update selector to match your button ID/Class
+    if (findButton) {
+        findButton.addEventListener("click", async (e) => {
+            e.preventDefault();
+            try {
+                const response = await fetch(`${API_URL}/recommend`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        location: document.querySelector("#location-select")?.value,
+                        sunlight: document.querySelector("#sunlight-select")?.value
+                    })
+                });
+                if (!response.ok) throw new Error("Server error: " + response.status);
+                const recommendation = await response.json();
+                console.log("Recommendation received:", recommendation);
+            } catch (error) {
+                console.error("Recommendation failed:", error);
+            }
+        });
+    }
+});
+    
     // =====================================================
     // FILTER EVENTS
     // =====================================================
@@ -882,4 +916,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
+});
+document.addEventListener("DOMContentLoaded", () => {
+    loadPlants();
 });
